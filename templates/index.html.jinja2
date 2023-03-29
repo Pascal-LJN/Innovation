@@ -1,16 +1,41 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Add Package to requirements.txt</title>
+    <title>留言板</title>
+    <!-- 引入Bootstrap样式 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.3.1/css/bootstrap.min.css">
   </head>
   <body>
-    <h1>Add Package to requirements.txt</h1>
-    <form method="POST">
-      <label for="package_name">Package Name:</label>
-      <input type="text" id="package_name" name="package_name">
-      <br>
-      <input type="submit" value="Add Package">
-    </form>
+    <div class="container py-5">
+      <h1 class="text-center mb-5">留言板</h1>
+      <div class="row">
+        <div class="col-md-6 offset-md-3">
+          <form method="POST" action="{{ url_for('index') }}">
+            <div class="form-group">
+              <label for="message">留言内容:</label>
+              <input type="text" id="message" name="message" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">添加留言</button>
+          </form>
+          <hr>
+          {% if show_messages %}
+          <h2 class="mb-3">留言列表</h2>
+          {% if messages %}
+          {% for message in messages %}
+          <div class="card mb-3">
+            <div class="card-body">{{ message }}</div>
+          </div>
+          {% endfor %}
+          {% else %}
+          <p class="text-muted">目前还没有留言。</p>
+          {% endif %}
+          {% endif %}
+          <a href="{{ url_for('get_messages') }}" class="btn btn-secondary">查看留言列表</a>
+        </div>
+      </div>
+    </div>
+    <!-- 引入Bootstrap脚本 -->
+    <script src="https://cdn.bootcss.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   </body>
 </html>
 
