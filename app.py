@@ -1,18 +1,28 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
+messages = []
 
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    global messages
     if request.method == 'POST':
-        package_name = request.form['package_name']
+        message_text = request.form['message']
+        messages.append(message_text)
         with open('requirements.txt', 'a') as f:
-            f.write(package_name + '\n')
-        return 'Package name {} has been added to requirements.txt'.format(package_name)
+            f.write(message_text + '\n')
+        return redirect(url_for('index'))
     else:
-        return render_template('index.html.jinja2')
+        return render_template('index.html.jinja2', show_messages=False)
+
+
+@app.route('/messages')
+def get_messages():
+    global messages
+    return render_template('index.html.jinja2', messages=messages, show_messages=True)
 
 
 if __name__ == '__main__':
     app.run()
+
